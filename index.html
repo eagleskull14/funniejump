@@ -1,0 +1,60 @@
+<html lang="en-US">
+
+  <head>
+
+    <!--
+
+Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch controls / ie6+ shim from pf
+
+-->
+
+    <title>funniejump</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="mainCSS.css">
+    <script src="mainJS.js" defer></script>
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
+    </head>
+
+  <body>
+    <div class="container">
+      <canvas id="canvas">
+        Aww, your browser doesn't support HTML5!
+      </canvas>
+
+      <div id="mainMenu">
+        <h1>funnie jump</h1>
+        <h3>go away</h3>
+
+        <p class="info" style="font-size: 11px;">
+          if you are dumb,
+					use
+          <span class="key left">?</span>
+          <span class="key right">?</span>
+					or a /d
+          to move and space to (re) start...
+        </p>
+        <a class="button" href="javascript:init()">Play</a>
+      </div>
+
+      <div id="gameOverMenu">
+        <h1>masive L.</h1>
+        <h3 id="go_score">you scored 0 points</h3>
+
+        <a class="button" href="javascript:reset()" style="font-size: 10px;">try to do better</a>
+      </div>
+
+
+      <!-- Preloading image ;) -->
+      <img id="sprite" src="https://htmlgames.github.io/htmlgames/differences/jump/sprites.png" />
+
+      <div id="scoreBoard">
+        <p id="score">0</p>
+      </div>
+
+    </div>
+    <center>
+      <div id="keys"></div>
+    </center>
+  </body>
+
+</html>
