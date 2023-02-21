@@ -11,6 +11,11 @@ var jumpHighVel = 0
 var jumpVel = 0
 var platformWidth = 0
 var platformHeight = 0
+var highscore = localStorage.getItem("highscore")
+if(highscore == null) {
+	localStorage.setItem("highscore", 0)
+	highscore = localStorage.getItem("highscore")
+}
 
 function mobile(id) { // TODO: pass keys as arrays (as could change)
   var o = document.getElementById(id);
@@ -136,7 +141,7 @@ var Player = function() {
 	};
 
   this.jumpHigh = function() {
-    let vel = Math.ceil(Math.random() * 128)
+    let vel = Math.ceil(Math.random() * 64)
 		if(vel < 16) {
 			vel = 16
 		}
@@ -195,14 +200,7 @@ function Platform() {
   //2: Moving
   //3: Breakable (Go through)
   //4: Vanishable
-  //Setting the probability of which type of platforms should be shown at what score
-  if (score >= 5000) this.types = [2, 3, 3, 3, 4, 4, 4, 4];
-  else if (score >= 2000 && score < 5000) this.types = [2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4];
-  else if (score >= 1000 && score < 2000) this.types = [2, 2, 2, 3, 3, 3, 3, 3];
-  else if (score >= 500 && score < 1000) this.types = [1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3];
-  else if (score >= 100 && score < 500) this.types = [1, 1, 1, 1, 2, 2];
-  else this.types = [1];
-	this.types = [2, 3, 3, 3, 4, 4, 4, 4]
+	this.types = [2, 2, 3, 3, 3, 4, 4, 4, 4]
   this.type = this.types[Math.floor(Math.random() * this.types.length)];
 
   //We can't have two consecutive breakable platforms otherwise it will be impossible to reach another platform sometimes!
@@ -215,6 +213,11 @@ function Platform() {
 
   this.moved = 0;
   this.vx = 1;
+	let muliply = Math.floor(Math.random() * 6)
+	if(muliply < 0.5) {
+		muliply = 0.5
+	}
+	this.multiply = muliply
 }
 
 for (var i = 0; i < platformCount; i++) {
@@ -450,12 +453,10 @@ function init() {
 
   function platformCalc() {
     var subs = platform_broken_substitute;
-
     platforms.forEach(function(p, i) {
       if (p.type == 2) {
         if (p.x < 0 || p.x + p.width > width) p.vx *= -1;
-
-        p.x += p.vx;
+        p.x += p.vx * p.multiply;
       }
 
       if (p.flag == 1 && subs.appearance === false && jumpCount === 0) {
@@ -593,7 +594,15 @@ function showGoMenu() {
   menu.style.visibility = "visible";
   if (navigator.userAgent.toLowerCase().indexOf("firefox") != -1 && navigator.userAgent.toLowerCase().indexOf("android") != -1) menu.style.display = "block"; // *ff
   var scoreText = document.getElementById("go_score");
-  scoreText.innerHTML = "You scored " + score + " points. bad. <p style='font-size: 8pt;'>you suck because my high was, like, 10000000000 or something lol</p>";
+	if(score > highscore) {
+		scoreText.innerHTML = "You scored " + score + " points.<p style='font-size: 8pt;'>i would say you suck but you did beat your highscore so i guess you are ok at the game. Or your highscore was easy to beat. idk.</p>";
+	} else {
+		scoreText.innerHTML = "You scored " + score + " points. bad. <p style='font-size: 8pt;'>you suck because you didn't beat your small score of " + highscore + " lol</p>";
+	}
+	if(score > highscore) {
+		localStorage.setItem("highscore", score)
+		highscore = localStorage.getItem("highscore")
+	}
 }
 
 //Hides the game over menu
